@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    restart: on-failure
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://user:password@db/agronomy
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: agronomy
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
